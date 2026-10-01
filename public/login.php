@@ -13,8 +13,9 @@
             $message = "Email and password are required.";
         }else {
             $statement = $connection -> prepare(
-                'SELECT id, name, email, password_hash, role FROM users WHERE  
-                email = ?'
+                'SELECT id, name, email, password_hash, role 
+                FROM users 
+                WHERE email = ?'
             ); //password_hash not pass directly 
 
             $statement -> bind_param('s', $email);
@@ -23,11 +24,11 @@
             $result = $statement -> get_result();
             $user = $result->fetch_assoc();
 
-            if($user && password_verify($password, $user['password_hash'])){
+            if($user && password_verify($password, $user['password_hash'])){ //check here using pass_verify
                 session_regenerate_id(true); //gens new session id after successfull authen
 
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['name'];
+                $_SESSION['user_name'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
 
                 $message = 'Login successful.';
@@ -50,17 +51,21 @@
     
     <h1>Login</h1>
 
-    
+    <?php if ($message !== ''): ?>
+        <p><?= htmlspecialchars($message) ?></p>
+    <?php endif; ?>
+
+
     <form method="POST">
 
         <div>
             <label for="email">Email</label>
-            <input type="email" id="email" name="email">
+            <input type="email" id="email" name="email" placeholder="Enter your email">
         </div>
 
         <div>
             <label for="password">Password</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" placeholder="password..">
         </div>
 
         <button type="submit">Login</button>
