@@ -48,32 +48,65 @@
     <title>Login</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-<body>
-    
-    <h1>Login</h1>
+<body class="auth-page">
 
-    <?php if ($message !== ''): ?>
-        <p><?= htmlspecialchars($message) ?></p>
-    <?php endif; ?>
+    <main class="auth-container">
 
+        <section class="auth-card" aria-labelledby="login-title">
 
-    <form method="POST">
+            <div class="auth-header">
+                <h1 id="login-title">Welcome Back</h1>
+                <p>Sign in to continue tracking your habits.</p>
+            </div>
 
-        <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email">
-        </div>
+            <?php if ($message !== ''): ?>
+                <div class="form-message" role="alert">
+                    <?= htmlspecialchars($message) ?>
+                </div>
+            <?php endif; ?>
 
-        <div>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="password..">
-        </div>
+            <form method="POST" class="auth-form">
 
-        <button type="submit">Login</button>
+                <div class="form-group">
+                    <label for="email">Email</label>
 
-    </form>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
 
+                <div class="form-group">
+                    <label for="password">Password</label>
 
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Don't have an account?
+                <a href="register.php">Create an account</a>
+            </p>
+
+        </section>
+
+    </main>
 
 </body>
 </html>

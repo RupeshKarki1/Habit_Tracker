@@ -57,37 +57,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-<body>
-    
-    <h1> Create Account </h1>
+<body class="auth-page">
 
-    <?php if($message !== ''): ?>
-        <p><?= htmlspecialchars($message)?></p>
-    <?php endif; ?>
+    <main class="auth-container">
 
-    <form method="POST" action="register.php">
+        <section class="auth-card" aria-labelledby="register-title">
 
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name">
-        </div>
+            <div class="auth-header">
+                <h1 id="register-title">Create Account</h1>
+                <p>Start building better habits today.</p>
+            </div>
 
-        <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email">
-        </div>
+            <?php if ($message !== ''): ?>
+                <div class="form-message" role="alert">
+                    <?= htmlspecialchars($message) ?>
+                </div>
+            <?php endif; ?>
 
-        <div>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password">
-        </div>
+            <form method="POST" action="register.php" class="auth-form">
 
-        <button type="submit">Register</button>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
 
-    </form>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
 
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+                </div>
 
+                <button type="submit" class="btn btn-primary">
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="login.php">Login</a>
+            </p>
+
+        </section>
+
+    </main>
 
 </body>
 </html>
