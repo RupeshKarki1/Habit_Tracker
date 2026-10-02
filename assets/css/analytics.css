@@ -1,0 +1,41 @@
+/* Analytics Cards */
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.analytics-card {
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.analytics-label {
+    display: block;
+    margin-bottom: 10px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.analytics-value {
+    display: block;
+    margin-bottom: 6px;
+    color: #111827;
+    font-size: 28px;
+}
+
+.analytics-card p {
+    margin: 0;
+    color: #6b7280;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+}

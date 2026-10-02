@@ -20,6 +20,7 @@ $habits = $habits ?? [];
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/dashboard.css">
     <link rel="stylesheet" href="../assets/css/habits.css">
+    <link rel="stylesheet" href="../assets/css/analytics.css">
     <link rel="stylesheet" href="../assets/css/error.css">
 </head>
 
@@ -185,10 +186,27 @@ $habits = $habits ?? [];
                 <p>Weekly, monthly, and yearly habit analytics will appear here.</p>
             </div>
 
-            <div class="empty-state">
-                <h3>No analytics data yet</h3>
-                <p>Analytics will become available after habit activity is recorded.</p>
-            </div>
+            <div class="analytics-grid">
+
+    <article class="analytics-card">
+        <span class="analytics-label">This Week</span>
+        <strong class="analytics-value">0%</strong>
+        <p>Completion rate</p>
+    </article>
+
+    <article class="analytics-card">
+        <span class="analytics-label">This Month</span>
+        <strong class="analytics-value">0%</strong>
+        <p>Completion rate</p>
+    </article>
+
+    <article class="analytics-card">
+        <span class="analytics-label">Best Streak</span>
+        <strong class="analytics-value">0 days</strong>
+        <p>Longest habit streak</p>
+    </article>
+
+</div>
         </section>
 
     </main>
