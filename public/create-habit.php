@@ -82,6 +82,11 @@
     );
 
     if($stmt -> execute()){
+
+        $_SESSION['flash'] = [
+            'type' => 'success',
+            'message' => 'Habit created successfully!'
+        ];
         $stmt -> close();
         $connection -> close();
 
@@ -96,7 +101,7 @@
     //flash error handling
     $_SESSION['flash'] = [
         'type' => 'error',
-        'message' => 'please fill in all required fields.'
+        'message' => 'Unable to create habits. Please try again.'
     ];
     header('Location: dashboard.php');
     exit;

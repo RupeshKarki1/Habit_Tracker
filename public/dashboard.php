@@ -1,7 +1,9 @@
 <?php
     require_once __DIR__ . '/../app/auth.php';
-
     requireLogin();
+
+    $flash = $_SESSION['flash'] ?? null;
+    unset($_SESSION['flash']);
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +16,7 @@
     <title>Dashboard</title>
 
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/error.css">
 </head>
 
 <body class="dashboard-page">
@@ -52,6 +55,16 @@
         <!-- Main dashboard -->
         <main class="dashboard-main">
 
+            <!--error display need to refactor again ig-->
+            <?php if ($flash): ?>
+
+                <div class="alert alert-<?= htmlspecialchars($flash['type']) ?>">
+                    <?= htmlspecialchars($flash['message']) ?>
+                </div>
+
+            <?php endif; ?>  
+            
+            
             <!-- Header -->
             <header class="dashboard-header">
 
