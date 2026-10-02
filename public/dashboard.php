@@ -153,16 +153,73 @@
                 </div>
 
 
-                <!-- Empty state until backend supplies habits -->
-                <div class="empty-state">
+              <!-- Habits supplied by backend -->
 
-                    <h3>No habits yet</h3>
+    <?php if (!empty($habits)): ?>
 
-                    <p>
-                        Create your first habit to start tracking your progress.
-                    </p>
+    <div class="habit-list">
+
+        <?php foreach ($habits as $habit): ?>
+
+            <article class="habit-card">
+
+                <div class="habit-card-content">
+
+                    <h3>
+                        <?= htmlspecialchars($habit['name']) ?>
+                    </h3>
+
+                    <?php if (!empty($habit['description'])): ?>
+                        <p class="habit-description">
+                            <?= htmlspecialchars($habit['description']) ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <div class="habit-meta">
+                        <span class="habit-tag">
+                            <?= htmlspecialchars(ucfirst($habit['category'])) ?>
+                        </span>
+
+                        <span class="habit-tag">
+                            <?= htmlspecialchars(ucfirst($habit['frequency'])) ?>
+                        </span>
+                    </div>
 
                 </div>
+
+                <div class="habit-actions">
+
+                    <button type="button" class="btn btn-primary btn-small">
+                        Complete
+                    </button>
+
+                    <button type="button" class="btn btn-secondary btn-small">
+                        Edit
+                    </button>
+
+                    <button type="button" class="btn btn-danger btn-small">
+                        Delete
+                    </button>
+
+                </div>
+
+            </article>
+
+        <?php endforeach; ?>
+
+    </div>
+
+<?php else: ?>
+
+    <div class="empty-state">
+        <h3>No habits yet</h3>
+
+        <p>
+            Create your first habit to start tracking your progress.
+        </p>
+    </div>
+
+<?php endif; ?>
 
             </section>
 
