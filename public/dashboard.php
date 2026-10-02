@@ -244,6 +244,8 @@
             <form
                 class="habit-form"
                 id="habit-form"
+                action="create-habit.php"
+                method="POST"
             >
 
                 <!-- Habit name -->
@@ -260,6 +262,22 @@
                         placeholder="e.g. Morning Walk"
                         required
                     >
+
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+
+                    <label for="habit-description">
+                        Description (Optional)
+                    </label>
+
+                    <textarea
+                        id="habit-description"
+                        name="description"
+                        placeholder="Describe your habit..."
+                        rows="3"
+                    ></textarea>
 
                 </div>
 
