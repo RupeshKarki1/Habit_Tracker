@@ -31,9 +31,10 @@
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
 
-                $message = 'Login successful.';
+                header('Location: dashboard.php');
+                exit;
             }else{
-                $message = 'Invalid email or password.';
+                $message = "Invalid credentials.";
             }
         }
     }

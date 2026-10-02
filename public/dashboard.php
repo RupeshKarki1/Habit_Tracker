@@ -41,6 +41,9 @@
                     Analytics
                 </a>
 
+                <a href = "logout.php">Logout</a> //for logout in dashboard
+
+
             </nav>
 
         </aside>
