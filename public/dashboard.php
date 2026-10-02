@@ -14,6 +14,7 @@
     <title>Dashboard</title>
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/dashboard.css">
+<link rel="stylesheet" href="../assets/css/habits.css">
 </head>
 
 <body class="dashboard-page">
@@ -384,7 +385,7 @@
 
 
     <!-- Dashboard JavaScript -->
-    <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/js/habits.js"></script>
 
 </body>
 
