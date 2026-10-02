@@ -1,7 +1,7 @@
 <?php
 
     function requireLogin(): void{ //return type void
-        if(session_status() === PHP_SESSION_NONE){
+        if(session_status() === PHP_SESSION_NONE){ //enabled but not active session 
             session_start();
         }
 

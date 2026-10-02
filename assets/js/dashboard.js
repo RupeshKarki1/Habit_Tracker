@@ -25,6 +25,3 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-habitForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-});
