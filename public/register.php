@@ -9,16 +9,31 @@
     //collecting variables from submit and trimming extra spaces front and back
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
-    $password = trim($_POST['password'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-    //register info validation
-    if($name === '' || $email === '' || $password === ''){
-        $message = "All fields are required";
-    }elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        $message = "Please enter a valid email";
-    }elseif(strlen($password) < 6){
-        $message = "password must be at least 6 characters.";
-    }else{
+    // Registration validation
+if ($name === '' || $email === '' || $password === '') {
+    $message = "All fields are required.";
+
+} elseif (mb_strlen($name) < 2 || mb_strlen($name) > 50) {
+    $message = "Name must be between 2 and 50 characters.";
+
+} elseif (!preg_match("/^[\p{L}\s'-]+$/u", $name)) {
+    $message = "Name can only contain letters, spaces, apostrophes and hyphens.";
+
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $message = "Please enter a valid email.";
+
+} elseif (strlen($password) < 8) {
+    $message = "Password must be at least 8 characters.";
+
+} elseif (!preg_match('/[A-Za-z]/', $password)) {
+    $message = "Password must contain at least one letter.";
+
+} elseif (!preg_match('/[0-9]/', $password)) {
+    $message = "Password must contain at least one number.";
+
+} else {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         $statement = $connection -> prepare(
@@ -82,13 +97,15 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter your name"
-                        autocomplete="name"
-                        required
-                    >
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    autocomplete="name"
+                    minlength="2"
+                    maxlength="50"
+                    required
+                >
                 </div>
 
                 <div class="form-group">
@@ -111,7 +128,7 @@
                         name="password"
                         placeholder="Create a password"
                         autocomplete="new-password"
-                        minlength="6"
+                        minlength="8"
                         required
                     >
                 </div>
