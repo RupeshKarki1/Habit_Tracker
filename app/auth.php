@@ -11,6 +11,15 @@
         }
     }
 
+    function requireAdmin(): void{
+        requireLogin();
+
+        if($_SESSION['role'] !== 'admin'){
+            header('Location: dashboard.php');
+            exit;
+        }
+    }
+
 
 
 ?>

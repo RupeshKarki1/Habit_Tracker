@@ -10,12 +10,12 @@
         $password = $_POST['password'] ?? '';
 
        if ($email === '' || $password === '') {
-    $message = "Email and password are required.";
+        $message = "Email and password are required.";
 
-} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $message = "Please enter a valid email address.";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = "Please enter a valid email address.";
 
-} else {
+        } else {
             $statement = $connection -> prepare(
                 'SELECT id, name, email, password_hash, role 
                 FROM users 
