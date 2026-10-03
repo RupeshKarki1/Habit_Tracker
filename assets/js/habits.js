@@ -40,10 +40,6 @@ editCloseButtons.forEach((button) => {
   });
 });
 
-// Temporary until update backend is ready
-editForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-});
 
 // Delete Habit Modal
 
