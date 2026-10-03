@@ -17,16 +17,16 @@
 
     $users = $result->fetch_all(MYSQLI_ASSOC);
     $totalUsers = count($users);
-$totalAdmins = 0;
-$totalRegularUsers = 0;
+    $totalAdmins = 0;
+    $totalRegularUsers = 0;
 
-foreach ($users as $user) {
-    if ($user['role'] === 'admin') {
-        $totalAdmins++;
-    } else {
-        $totalRegularUsers++;
+    foreach ($users as $user) {
+        if ($user['role'] === 'admin') {
+            $totalAdmins++;
+        } else {
+            $totalRegularUsers++;
+        }
     }
-}
 
     $connection->close();
 
