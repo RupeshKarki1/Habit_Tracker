@@ -180,7 +180,7 @@ $connection->close();
                                     data-habit-id="<?= (int) $habit['id'] ?>"
                                     >
                                      Delete
-</button>
+                                </button>
                             </div>
 
                         </article>
@@ -236,64 +236,10 @@ $connection->close();
 
 
 <?php include __DIR__ . '/views/dashboard/add-habit-modal.php'; ?>
-
 <?php include __DIR__ . '/views/dashboard/edit-habit-modal.php'; ?>
+<?php include __DIR__ . '/views/dashboard/delete-habit-modal.php'; ?>
 
 
-
-                <!-- Delete Habit Modal -->
-<div class="modal" id="delete-habit-modal" aria-hidden="true">
-
-    <div class="modal-backdrop" data-close-delete-modal></div>
-
-    <div class="modal-dialog" role="dialog" aria-modal="true">
-
-        <div class="modal-header">
-            <div>
-                <h2>Delete Habit</h2>
-                <p>Are you sure you want to delete this habit?</p>
-            </div>
-
-            <button
-                type="button"
-                class="modal-close"
-                data-close-delete-modal
-            >
-                &times;
-            </button>
-        </div>
-
-        <form id="delete-habit-form" method="POST">
-
-            <input
-                type="hidden"
-                id="delete-habit-id"
-                name="habit_id"
-            >
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-close-delete-modal
-                >
-                    Cancel
-                </button>
-
-                <button
-                    type="submit"
-                    class="btn btn-danger"
-                >
-                    Delete
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-</div>
 <script src="../assets/js/habits.js"></script>
 
 </body>
