@@ -17,7 +17,6 @@ addCloseButtons.forEach((button) => {
 });
 
 // Edit Habit Modal
-
 const editModal = document.getElementById("edit-habit-modal");
 const editButtons = document.querySelectorAll(".edit-habit-button");
 const editCloseButtons = document.querySelectorAll("[data-close-edit-modal]");
@@ -49,7 +48,6 @@ editCloseButtons.forEach((button) => {
 });
 
 // Delete Habit Modal
-
 const deleteModal = document.getElementById("delete-habit-modal");
 const deleteButtons = document.querySelectorAll(".delete-habit-button");
 const deleteCloseButtons = document.querySelectorAll(
@@ -74,13 +72,7 @@ deleteCloseButtons.forEach((button) => {
   });
 });
 
-// Temporary until delete backend is ready
-deleteForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-});
-
 // Close open modal with Escape key
-
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     addModal.classList.remove("is-open");

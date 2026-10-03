@@ -9,10 +9,20 @@ unset($_SESSION['flash']);
 
 $userId = $_SESSION['user_id'];
 
-$sql = "SELECT id, name, description, category, frequency, created_at
-        FROM habits
-        WHERE user_id = ?
-        ORDER BY created_at DESC";
+$sql = "SELECT
+            h.id,
+            h.name,
+            h.description,
+            h.category,
+            h.frequency,
+            h.created_at,
+            hl.status AS today_status
+        FROM habits h
+        LEFT JOIN habit_logs hl
+            ON h.id = hl.habit_id
+            AND hl.log_date = CURDATE()
+        WHERE h.user_id = ?
+        ORDER BY h.created_at DESC";
 
 $stmt = $connection->prepare($sql);
 
@@ -158,13 +168,50 @@ $connection->close();
                                 </div>
                             </div>
 
+                            <!--completed status-->
+                            <div class="habit-today-status">
+
+                                <?php if ($habit['today_status'] === 'completed'): ?>
+
+                                    <span class="status-completed">
+                                        Completed today
+                                    </span>
+
+                                <?php elseif ($habit['today_status'] === 'missed'): ?>
+
+                                    <span class="status-missed">
+                                        Missed today
+                                    </span>
+
+                                <?php else: ?>
+
+                                    <span class="status-pending">
+                                        Not completed
+                                    </span>
+
+                                <?php endif; ?>
+
+                            </div>
+
                             <div class="habit-actions">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary btn-small"
-                                >
-                                    Complete
-                                </button>
+                               
+                                <form action="log-habit.php" method="POST" class="inline-form">
+                                    <input
+                                        type="hidden"
+                                        name="habit_id"
+                                        value="<?= (int) $habit['id'] ?>"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="status"
+                                        value="completed"
+                                    >
+
+                                    <button type="submit" class="btn btn-primary btn-small">
+                                        Complete
+                                    </button>
+                                </form>
 
                              <button
                                 type="button"
@@ -184,7 +231,7 @@ $connection->close();
                                     data-habit-id="<?= (int) $habit['id'] ?>"
                                     >
                                      Delete
-</button>
+                                </button>
                             </div>
 
                         </article>
@@ -240,64 +287,10 @@ $connection->close();
 
 
 <?php include __DIR__ . '/views/dashboard/add-habit-modal.php'; ?>
-
 <?php include __DIR__ . '/views/dashboard/edit-habit-modal.php'; ?>
+<?php include __DIR__ . '/views/dashboard/delete-habit-modal.php'; ?>
 
 
-
-                <!-- Delete Habit Modal -->
-<div class="modal" id="delete-habit-modal" aria-hidden="true">
-
-    <div class="modal-backdrop" data-close-delete-modal></div>
-
-    <div class="modal-dialog" role="dialog" aria-modal="true">
-
-        <div class="modal-header">
-            <div>
-                <h2>Delete Habit</h2>
-                <p>Are you sure you want to delete this habit?</p>
-            </div>
-
-            <button
-                type="button"
-                class="modal-close"
-                data-close-delete-modal
-            >
-                &times;
-            </button>
-        </div>
-
-        <form id="delete-habit-form" method="POST">
-
-            <input
-                type="hidden"
-                id="delete-habit-id"
-                name="habit_id"
-            >
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-close-delete-modal
-                >
-                    Cancel
-                </button>
-
-                <button
-                    type="submit"
-                    class="btn btn-danger"
-                >
-                    Delete
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-</div>
 <script src="../assets/js/habits.js"></script>
 
 </body>
