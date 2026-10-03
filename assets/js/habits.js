@@ -48,7 +48,6 @@ editCloseButtons.forEach((button) => {
   });
 });
 
-
 // Delete Habit Modal
 
 const deleteModal = document.getElementById("delete-habit-modal");
