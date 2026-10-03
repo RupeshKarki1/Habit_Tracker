@@ -80,3 +80,23 @@ document.addEventListener("keydown", (event) => {
     deleteModal.classList.remove("is-open");
   }
 });
+
+// Sidebar active navigation
+
+const dashboardNav = document.getElementById("nav-dashboard");
+const habitsNav = document.getElementById("nav-habits");
+
+function updateActiveNavigation() {
+  dashboardNav.classList.remove("active");
+  habitsNav.classList.remove("active");
+
+  if (window.location.hash === "#habits") {
+    habitsNav.classList.add("active");
+  } else {
+    dashboardNav.classList.add("active");
+  }
+}
+
+updateActiveNavigation();
+
+window.addEventListener("hashchange", updateActiveNavigation);
