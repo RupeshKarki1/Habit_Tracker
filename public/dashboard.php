@@ -9,10 +9,20 @@ unset($_SESSION['flash']);
 
 $userId = $_SESSION['user_id'];
 
-$sql = "SELECT id, name, description, category, frequency, created_at
-        FROM habits
-        WHERE user_id = ?
-        ORDER BY created_at DESC";
+$sql = "SELECT
+            h.id,
+            h.name,
+            h.description,
+            h.category,
+            h.frequency,
+            h.created_at,
+            hl.status AS today_status
+        FROM habits h
+        LEFT JOIN habit_logs hl
+            ON h.id = hl.habit_id
+            AND hl.log_date = CURDATE()
+        WHERE h.user_id = ?
+        ORDER BY h.created_at DESC";
 
 $stmt = $connection->prepare($sql);
 
@@ -158,24 +168,67 @@ $connection->close();
                                 </div>
                             </div>
 
-                            <!--for complete button-->
-                            <form action="log-habit.php" method="POST" class="inline-form">
-                                <input
-                                    type="hidden"
-                                    name="habit_id"
-                                    value="<?= (int) $habit['id'] ?>"
-                                >
+                            <!--completed status-->
+                            <div class="habit-today-status">
 
-                                <input
-                                    type="hidden"
-                                    name="status"
-                                    value="completed"
-                                >
+                                <?php if ($habit['today_status'] === 'completed'): ?>
 
-                                <button type="submit" class="btn btn-primary btn-small">
-                                    Complete
+                                    <span class="status-completed">
+                                        Completed today
+                                    </span>
+
+                                <?php elseif ($habit['today_status'] === 'missed'): ?>
+
+                                    <span class="status-missed">
+                                        Missed today
+                                    </span>
+
+                                <?php else: ?>
+
+                                    <span class="status-pending">
+                                        Not completed
+                                    </span>
+
+                                <?php endif; ?>
+
+                            </div>
+
+                            <div class="habit-actions">
+                               
+                                <form action="log-habit.php" method="POST" class="inline-form">
+                                    <input
+                                        type="hidden"
+                                        name="habit_id"
+                                        value="<?= (int) $habit['id'] ?>"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="status"
+                                        value="completed"
+                                    >
+
+                                    <button type="submit" class="btn btn-primary btn-small">
+                                        Complete
+                                    </button>
+                                </form>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary btn-small edit-habit-button"
+                                    data-habit-id="<?= (int) $habit['id'] ?>"
+                                >
+                                    Edit
                                 </button>
-                            </form>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-small delete-habit-button"
+                                    data-habit-id="<?= (int) $habit['id'] ?>"
+                                    >
+                                     Delete
+                                </button>
+                            </div>
 
                         </article>
 
