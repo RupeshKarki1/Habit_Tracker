@@ -1,104 +1,82 @@
-
 <?php
 
 function calculateHabitStreaks(array $completedDates, string $frequency): array
 {
     $today = new DateTimeImmutable('today');
 
-    // Remove duplicate dates and sort them.
-    $completedDates = array_values(array_unique($completedDates));
-    sort($completedDates);
+    // Normalize dates and remove duplicates.
+    $periods = [];
 
-    if (empty($completedDates)) {
+    foreach (array_unique($completedDates) as $date) {
+        $dateObject = new DateTimeImmutable($date);
+
+        if ($frequency === 'weekly') {
+            $dateObject = $dateObject->modify('monday this week');
+        }
+
+        $periods[] = $dateObject;
+    }
+
+    // Sort periods chronologically.
+    usort($periods, fn($a, $b) => $a <=> $b);
+
+    if (empty($periods)) {
         return [
             'current' => 0,
             'longest' => 0
         ];
     }
 
-    // Convert dates into comparable periods.
-    $periods = [];
-
-    foreach ($completedDates as $date) {
-        $dateObject = new DateTimeImmutable($date);
-
-        if ($frequency === 'weekly') {
-            $periods[] = $dateObject->format('o-W');
-        } else {
-            $periods[] = $dateObject->format('Y-m-d');
-        }
-    }
-
-    $periods = array_values(array_unique($periods));
-
     // Calculate longest streak.
     $longest = 1;
-    $currentSequence = 1;
+    $sequence = 1;
 
     for ($i = 1; $i < count($periods); $i++) {
-        $previous = new DateTimeImmutable($periods[$i - 1]);
-        $current = new DateTimeImmutable($periods[$i]);
-
-        if ($frequency === 'weekly') {
-            $previous = $previous->modify('monday this week');
-            $current = $current->modify('monday this week');
-        }
-
-        $difference = $previous->diff($current)->days;
+        $difference = $periods[$i - 1]
+            ->diff($periods[$i])->days;
 
         $expectedDifference = $frequency === 'weekly' ? 7 : 1;
 
         if ($difference === $expectedDifference) {
-            $currentSequence++;
+            $sequence++;
         } else {
-            $currentSequence = 1;
+            $sequence = 1;
         }
 
-        $longest = max($longest, $currentSequence);
+        $longest = max($longest, $sequence);
     }
 
-    // Calculate current streak.
+    // Determine the latest period that can count toward a current streak.
     $currentPeriod = $frequency === 'weekly'
-        ? $today->format('o-W')
-        : $today->format('Y-m-d');
+        ? $today->modify('monday this week')
+        : $today;
 
     $previousPeriod = $frequency === 'weekly'
-        ? $today->modify('-1 week')->format('o-W')
-        : $today->modify('-1 day')->format('Y-m-d');
+        ? $currentPeriod->modify('-1 week')
+        : $currentPeriod->modify('-1 day');
 
     $lastPeriod = end($periods);
 
-    if (
-        $lastPeriod !== $currentPeriod &&
-        $lastPeriod !== $previousPeriod
-    ) {
-        $currentStreak = 0;
-    } else {
-        $currentStreak = 0;
+    if ($lastPeriod != $currentPeriod && $lastPeriod != $previousPeriod) {
+        return [
+            'current' => 0,
+            'longest' => $longest
+        ];
+    }
 
-        for ($i = count($periods) - 1; $i >= 0; $i--) {
-            if ($currentStreak === 0) {
-                $currentStreak = 1;
-                continue;
-            }
+    // Count consecutive periods backward from the latest completion.
+    $currentStreak = 1;
 
-            $previous = new DateTimeImmutable($periods[$i]);
-            $next = new DateTimeImmutable($periods[$i + 1]);
+    for ($i = count($periods) - 1; $i > 0; $i--) {
+        $difference = $periods[$i - 1]
+            ->diff($periods[$i])->days;
 
-            if ($frequency === 'weekly') {
-                $previous = $previous->modify('monday this week');
-                $next = $next->modify('monday this week');
-            }
+        $expectedDifference = $frequency === 'weekly' ? 7 : 1;
 
-            $difference = $previous->diff($next)->days;
-
-            $expectedDifference = $frequency === 'weekly' ? 7 : 1;
-
-            if ($difference === $expectedDifference) {
-                $currentStreak++;
-            } else {
-                break;
-            }
+        if ($difference === $expectedDifference) {
+            $currentStreak++;
+        } else {
+            break;
         }
     }
 
