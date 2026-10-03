@@ -23,6 +23,7 @@
         <form
             class="habit-form"
             id="edit-habit-form"
+            action="update-habit.php"
             method="POST"
         >
             <input
