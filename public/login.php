@@ -35,6 +35,10 @@
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['role'] = $user['role'];
 
+                if($user['role'] === 'admin'){
+                    header('Location: admin/dashboard.php');
+                    exit;
+                }
                 header('Location: dashboard.php');
                 exit;
             }else{
