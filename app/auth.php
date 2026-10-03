@@ -15,7 +15,7 @@
         requireLogin();
 
         if($_SESSION['role'] !== 'admin'){
-            header('Location: dashboard.php');
+            header('Location: ../dashboard.php');
             exit;
         }
     }
