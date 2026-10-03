@@ -158,30 +158,24 @@ $connection->close();
                                 </div>
                             </div>
 
-                            <div class="habit-actions">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary btn-small"
+                            <!--for complete button-->
+                            <form action="log-habit.php" method="POST" class="inline-form">
+                                <input
+                                    type="hidden"
+                                    name="habit_id"
+                                    value="<?= (int) $habit['id'] ?>"
                                 >
+
+                                <input
+                                    type="hidden"
+                                    name="status"
+                                    value="completed"
+                                >
+
+                                <button type="submit" class="btn btn-primary btn-small">
                                     Complete
                                 </button>
-
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary btn-small edit-habit-button"
-                                    data-habit-id="<?= (int) $habit['id'] ?>"
-                                >
-                                    Edit
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="btn btn-danger btn-small delete-habit-button"
-                                    data-habit-id="<?= (int) $habit['id'] ?>"
-                                    >
-                                     Delete
-                                </button>
-                            </div>
+                            </form>
 
                         </article>
 
