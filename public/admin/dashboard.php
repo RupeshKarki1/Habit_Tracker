@@ -47,20 +47,29 @@
         <aside class="admin-sidebar">
 
             <h2>Habit Tracker</h2>
+<nav class="admin-nav">
 
-            <nav class="admin-nav">
-                <a href="#overview" class="admin-nav-link active">
-                    Dashboard
-                </a>
+    <a
+        href="#overview"
+        class="admin-nav-link"
+        id="admin-nav-dashboard"
+    >
+        Dashboard
+    </a>
 
-                <a href="#users" class="admin-nav-link">
-                    Users
-                </a>
+    <a
+        href="#users"
+        class="admin-nav-link"
+        id="admin-nav-users"
+    >
+        Users
+    </a>
 
-                <a href="../logout.php" class="admin-nav-link">
-                    Logout
-                </a>
-            </nav>
+    <a href="../logout.php" class="admin-nav-link">
+        Logout
+    </a>
+
+</nav>
 
         </aside>
 
@@ -113,14 +122,15 @@
 
                     <table class="admin-table">
 
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Joined</th>
-                            </tr>
-                        </thead>
+                       <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
                         <tbody>
 
@@ -148,6 +158,67 @@
                                             )
                                         ) ?>
                                     </td>
+                                    <td class="admin-user-actions">
+
+    <?php if ((int) $user['id'] !== (int) $_SESSION['user_id']): ?>
+
+        <form
+            action="update-role.php"
+            method="POST"
+            class="admin-action-form"
+        >
+            <input
+                type="hidden"
+                name="user_id"
+                value="<?= (int) $user['id'] ?>"
+            >
+
+            <input
+                type="hidden"
+                name="role"
+                value="<?= $user['role'] === 'admin' ? 'user' : 'admin' ?>"
+            >
+
+            <button
+                type="submit"
+                class="admin-role-button"
+            >
+                <?= $user['role'] === 'admin'
+                    ? 'Make User'
+                    : 'Make Admin' ?>
+            </button>
+        </form>
+
+
+        <form
+            action="delete-user.php"
+            method="POST"
+            class="admin-action-form"
+            onsubmit="return confirm('Are you sure you want to delete this user?');"
+        >
+            <input
+                type="hidden"
+                name="user_id"
+                value="<?= (int) $user['id'] ?>"
+            >
+
+            <button
+                type="submit"
+                class="admin-delete-button"
+            >
+                Delete
+            </button>
+        </form>
+
+            <?php else: ?>
+
+                <span class="admin-current-user">
+                    Current Account
+                </span>
+
+            <?php endif; ?>
+
+        </td>
 
                                 </tr>
 
@@ -164,6 +235,6 @@
         </main>
 
     </div>
-
+                <script src="../../assets/js/admin.js"></script>
 </body>
 </html>

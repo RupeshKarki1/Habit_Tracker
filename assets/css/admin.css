@@ -116,6 +116,50 @@
     background: #f9fafb;
 }
 
+.admin-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.admin-action-form {
+    margin: 0;
+}
+
+.admin-role-button,
+.admin-delete-button {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.admin-role-button {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.admin-role-button:hover {
+    background: #1d4ed8;
+}
+
+.admin-delete-button {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.admin-delete-button:hover {
+    background: #fecaca;
+}
+
+.admin-current-user {
+    color: #6b7280;
+    font-size: 14px;
+}
+
 @media (max-width: 768px) {
     .admin-layout {
         flex-direction: column;
