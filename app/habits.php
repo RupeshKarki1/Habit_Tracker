@@ -1,4 +1,3 @@
-
 <?php
 
 function calculateHabitStreaks(array $completedDates, string $frequency): array
