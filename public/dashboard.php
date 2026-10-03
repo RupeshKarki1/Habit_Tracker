@@ -1,12 +1,33 @@
 <?php
 require_once __DIR__ . '/../app/auth.php';
+require_once __DIR__ . '/../config/database.php';
 
 requireLogin();
 
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
 
-$habits = $habits ?? [];
+$userId = $_SESSION['user_id'];
+
+$sql = "SELECT id, name, description, category, frequency, created_at
+        FROM habits
+        WHERE user_id = ?
+        ORDER BY created_at DESC";
+
+$stmt = $connection->prepare($sql);
+
+if (!$stmt) {
+    die('Unable to retrieve habits.');
+}
+
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$habits = $result->fetch_all(MYSQLI_ASSOC);
+
+$stmt->close();
+$connection->close();
 ?>
 
 <!DOCTYPE html>
