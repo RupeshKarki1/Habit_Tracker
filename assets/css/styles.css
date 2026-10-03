@@ -371,6 +371,19 @@ body {
     background: #e5e7eb;
 }
 
+/* Habit Card Footer */
+
+.habit-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.edit-habit-btn {
+    align-self: center;
+    flex-shrink: 0;
+}
+
 /* Dashboard responsive */
 
 @media (max-width: 768px) {

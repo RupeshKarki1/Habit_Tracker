@@ -235,7 +235,10 @@
 
                         </p>
 
-                        <div class="habit-card-footer">
+
+                    <div class="habit-card-footer">
+
+                        <div class="habit-card-meta">
 
                             <span class="habit-frequency">
                                 <?= htmlspecialchars(ucfirst($habit['frequency'])) ?>
@@ -249,6 +252,20 @@
                             </span>
 
                         </div>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary edit-habit-btn"
+                            data-id="<?= (int) $habit['id'] ?>"
+                            data-name="<?= htmlspecialchars($habit['name'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-description="<?= htmlspecialchars($habit['description'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            data-category="<?= htmlspecialchars($habit['category'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-frequency="<?= htmlspecialchars($habit['frequency'], ENT_QUOTES, 'UTF-8') ?>"
+                        >
+                            Edit
+                        </button>
+
+                    </div>
 
                     </article>
 
