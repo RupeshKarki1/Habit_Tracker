@@ -23,10 +23,18 @@ const editButtons = document.querySelectorAll(".edit-habit-button");
 const editCloseButtons = document.querySelectorAll("[data-close-edit-modal]");
 const editHabitId = document.getElementById("edit-habit-id");
 const editForm = document.getElementById("edit-habit-form");
+const editHabitName = document.getElementById("edit-habit-name");
+const editHabitDescription = document.getElementById("edit-habit-description");
+const editHabitCategory = document.getElementById("edit-habit-category");
+const editHabitFrequency = document.getElementById("edit-habit-frequency");
 
 editButtons.forEach((button) => {
   button.addEventListener("click", () => {
     editHabitId.value = button.dataset.habitId;
+    editHabitName.value = button.dataset.name;
+    editHabitDescription.value = button.dataset.description;
+    editHabitCategory.value = button.dataset.category;
+    editHabitFrequency.value = button.dataset.frequency;
 
     editModal.classList.add("is-open");
     editModal.setAttribute("aria-hidden", "false");
