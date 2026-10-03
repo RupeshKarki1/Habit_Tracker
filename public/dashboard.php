@@ -65,12 +65,25 @@ $connection->close();
             <h2>Habit Tracker</h2>
         </div>
 
-        <nav class="sidebar-nav" aria-label="Main navigation">
-            <a href="dashboard.php" class="nav-link active">Dashboard</a>
-            <a href="#habits" class="nav-link">My Habits</a>
-            <a href="#analytics" class="nav-link">Analytics</a>
-            <a href="logout.php" class="nav-link">Logout</a>
-        </nav>
+                <nav class="sidebar-nav" aria-label="Main navigation">
+
+                <a href="dashboard.php" class="nav-link" id="nav-dashboard">
+                    Dashboard
+                </a>
+
+                <a href="#habits" class="nav-link" id="nav-habits">
+                    My Habits
+                </a>
+
+                <a href="analytics.php" class="nav-link">
+                    Analytics
+                </a>
+
+                <a href="logout.php" class="nav-link">
+                    Logout
+                </a>
+
+            </nav>
     </aside>
 
     <!-- Main Content -->

@@ -227,3 +227,192 @@
     ];
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | Habit Tracker</title>
+
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/analytics.css">
+</head>
+
+<body class="dashboard-page">
+
+    <div class="dashboard-layout">
+
+        <aside class="sidebar">
+
+            <h2 class="sidebar-brand">Habit Tracker</h2>
+
+            <nav class="sidebar-nav">
+
+                <a href="dashboard.php" class="nav-link">
+                    Dashboard
+                </a>
+
+                <a href="dashboard.php#habits" class="nav-link">
+                    My Habits
+                </a>
+
+                <a href="analytics.php" class="nav-link active">
+                    Analytics
+                </a>
+
+                <a href="logout.php" class="nav-link">
+                    Logout
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <main class="dashboard-main">
+
+            <header class="dashboard-header">
+                <div>
+                    <h1>Analytics</h1>
+                    <p>
+                        Review your habit performance and progress.
+                    </p>
+                </div>
+            </header>
+
+
+            <section class="dashboard-content">
+
+                <div class="section-header">
+                    <h2>Summary</h2>
+                    <p>A summary of your tracked habit activity.</p>
+                </div>
+
+
+                <div class="analytics-grid">
+
+                    <div class="analytics-card">
+                        <span class="analytics-label">
+                            Total Habits
+                        </span>
+
+                        <strong class="analytics-value">
+                            <?= (int) $analyticsData['summary']['totalHabits'] ?>
+                        </strong>
+
+                        <p>Habits currently created</p>
+                    </div>
+
+
+                    <div class="analytics-card">
+                        <span class="analytics-label">
+                            Completed
+                        </span>
+
+                        <strong class="analytics-value">
+                            <?= (int) $analyticsData['summary']['totalCompleted'] ?>
+                        </strong>
+
+                        <p>Total completed records</p>
+                    </div>
+
+
+                    <div class="analytics-card">
+                        <span class="analytics-label">
+                            Missed
+                        </span>
+
+                        <strong class="analytics-value">
+                            <?= (int) $analyticsData['summary']['totalMissed'] ?>
+                        </strong>
+
+                        <p>Total missed records</p>
+                    </div>
+
+
+                    <div class="analytics-card">
+                        <span class="analytics-label">
+                            Completion Rate
+                        </span>
+
+                        <strong class="analytics-value">
+                            <?= htmlspecialchars(
+                                (string) $analyticsData['summary']['completionRate']
+                            ) ?>%
+                        </strong>
+
+                        <p>Overall completion percentage</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="analytics-chart-section">
+
+                <div class="section-header">
+                    <h2>Weekly Progress</h2>
+                    <p>Your activity during the last seven days.</p>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="weekly-chart"></canvas>
+                </div>
+
+            </section>
+
+
+            <section class="analytics-chart-section">
+
+                <div class="section-header">
+                    <h2>Monthly Progress</h2>
+                    <p>Your activity during the current month.</p>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="monthly-chart"></canvas>
+                </div>
+
+            </section>
+
+
+            <section class="analytics-chart-section">
+
+                <div class="section-header">
+                    <h2>Yearly Progress</h2>
+                    <p>Your activity during the current year.</p>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="yearly-chart"></canvas>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script>
+        window.analyticsData =
+            <?= json_encode(
+                $analyticsData,
+                JSON_HEX_TAG |
+                JSON_HEX_APOS |
+                JSON_HEX_AMP |
+                JSON_HEX_QUOT
+            ) ?>;
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../assets/js/analytics.js"></script>
+
+</body>
+
+</html>
