@@ -4,6 +4,35 @@
 
     $flash = $_SESSION['flash'] ?? null;
     unset($_SESSION['flash']);
+
+    require_once __DIR__ .'/../config/database.php';
+
+    $userId = $_SESSION['user_id'];
+
+    $sql = "SELECT id, name, description, category, frequency, created_at
+        FROM habits
+        WHERE user_id = ?
+        ORDER BY created_at DESC"; 
+        
+    $stmt = $connection->prepare($sql);
+
+    if(!$stmt){
+        die('Unable to retrieve habits.');
+    }
+
+    
+    $stmt->bind_param("i", $userId);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $habits = $result->fetch_all(MYSQLI_ASSOC);
+
+    $stmt->close();
+    $connection->close();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -163,7 +192,10 @@
                 </div>
 
 
-                <!-- Empty state until backend supplies habits -->
+               
+            <?php if (empty($habits)): ?>
+
+                <!-- Empty state -->
                 <div class="empty-state">
 
                     <h3>No habits yet</h3>
@@ -173,6 +205,58 @@
                     </p>
 
                 </div>
+
+            <?php else: ?>
+
+            <!-- Habit list -->
+            <div class="habits-grid">
+
+                <?php foreach ($habits as $habit): ?>
+
+                    <article class="habit-card">
+
+                        <div class="habit-card-header">
+
+                            <h3>
+                                <?= htmlspecialchars($habit['name']) ?>
+                            </h3>
+
+                            <span class="habit-category">
+                                <?= htmlspecialchars(ucfirst($habit['category'])) ?>
+                            </span>
+
+                        </div>
+
+                        <p class="habit-description">
+
+                            <?= htmlspecialchars(
+                                $habit['description'] ?: 'No description provided.'
+                            ) ?>
+
+                        </p>
+
+                        <div class="habit-card-footer">
+
+                            <span class="habit-frequency">
+                                <?= htmlspecialchars(ucfirst($habit['frequency'])) ?>
+                            </span>
+
+                            <span class="habit-created">
+                                Created:
+                                <?= htmlspecialchars(
+                                    date('M j, Y', strtotime($habit['created_at']))
+                                ) ?>
+                            </span>
+
+                        </div>
+
+                    </article>
+
+                <?php endforeach; ?>
+
+            </div>
+
+            <?php endif; ?>
 
             </section>
 
