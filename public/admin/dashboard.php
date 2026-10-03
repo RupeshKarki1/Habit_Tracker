@@ -1,11 +1,23 @@
 <?php
 
-require_once __DIR__ . '/../../app/auth.php';
-require_once __DIR__ . '/../../config/database.php';
+    require_once __DIR__ . '/../../app/auth.php';
+    require_once __DIR__ . '/../../config/database.php';
 
-requireAdmin();
+    requireAdmin();
 
-$userName = $_SESSION['user_name'] ?? 'Admin';
+    $sql = "SELECT id, name, email, role, created_at
+            FROM users
+            ORDER BY created_at DESC";
+
+    $result = $connection->query($sql);
+
+    if (!$result) {
+        die('Unable to retrieve users.');
+    }
+
+    $users = $result->fetch_all(MYSQLI_ASSOC);
+
+    $connection->close();
 
 ?>
 <!DOCTYPE html>
@@ -20,13 +32,7 @@ $userName = $_SESSION['user_name'] ?? 'Admin';
 
     <h1>Admin Dashboard</h1>
 
-    <p>
-        Welcome, <?= htmlspecialchars($userName) ?>
-    </p>
 
-    <p>
-        You are logged in as an administrator.
-    </p>
 
     <a href="../logout.php">Logout</a>
 
