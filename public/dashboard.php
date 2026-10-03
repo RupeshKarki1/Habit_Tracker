@@ -1,43 +1,81 @@
 <?php
-require_once __DIR__ . '/../app/auth.php';
-require_once __DIR__ . '/../config/database.php';
+    require_once __DIR__ . '/../app/auth.php';
+    require_once __DIR__ . '/../config/database.php';
+    require_once __DIR__ . '/../app/habits.php';
 
-requireLogin();
+    requireLogin();
 
-$flash = $_SESSION['flash'] ?? null;
-unset($_SESSION['flash']);
+    $flash = $_SESSION['flash'] ?? null;
+    unset($_SESSION['flash']);
 
-$userId = $_SESSION['user_id'];
+    $userId = $_SESSION['user_id'];
 
-$sql = "SELECT
-            h.id,
-            h.name,
-            h.description,
-            h.category,
-            h.frequency,
-            h.created_at,
-            hl.status AS today_status
-        FROM habits h
-        LEFT JOIN habit_logs hl
-            ON h.id = hl.habit_id
-            AND hl.log_date = CURDATE()
+    $sql = "SELECT
+                h.id,
+                h.name,
+                h.description,
+                h.category,
+                h.frequency,
+                h.created_at,
+                hl.status AS today_status
+            FROM habits h
+            LEFT JOIN habit_logs hl
+                ON h.id = hl.habit_id
+                AND hl.log_date = CURDATE()
+            WHERE h.user_id = ?
+            ORDER BY h.created_at DESC";
+
+    $stmt = $connection->prepare($sql);
+
+    if (!$stmt) {
+        die('Unable to retrieve habits.');
+    }
+
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $habits = $result->fetch_all(MYSQLI_ASSOC);
+
+    $stmt->close();
+
+    $completedDatesByHabit = [];
+
+    $sql = "SELECT
+            hl.habit_id,
+            hl.log_date
+        FROM habit_logs hl
+        INNER JOIN habits h
+            ON hl.habit_id = h.id
         WHERE h.user_id = ?
-        ORDER BY h.created_at DESC";
+            AND hl.status = 'completed'
+        ORDER BY hl.log_date ASC";
 
-$stmt = $connection->prepare($sql);
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
 
-if (!$stmt) {
-    die('Unable to retrieve habits.');
-}
+    $result = $stmt->get_result();
 
-$stmt->bind_param("i", $userId);
-$stmt->execute();
+    while ($row = $result->fetch_assoc()) {
+        $completedDatesByHabit[$row['habit_id']][] = $row['log_date'];
+    }
 
-$result = $stmt->get_result();
-$habits = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    $connection->close();
 
-$stmt->close();
-$connection->close();
+    foreach ($habits as &$habit) { //streak calculation.
+        $habitId = $habit['id'];
+
+        $completedDates = $completedDatesByHabit[$habitId] ?? [];
+
+        $habit['streaks'] = calculateHabitStreaks(
+            $completedDates,
+            $habit['frequency']
+        );
+    }
+
+    unset($habit);
 ?>
 
 <!DOCTYPE html>
@@ -181,6 +219,28 @@ $connection->close();
                                 </div>
                             </div>
 
+                            <!-- Habit streak statistics -->
+                            <div class="habit-stats">
+
+                                <div class="habit-stat">
+                                    <span class="habit-stat-label">Current Streak</span>
+
+                                    <strong class="habit-stat-value">
+                                        <?= (int) $habit['streaks']['current'] ?>
+                                        <?= $habit['frequency'] === 'weekly' ? 'weeks' : 'days' ?>
+                                    </strong>
+                                </div>
+
+                                <div class="habit-stat">
+                                    <span class="habit-stat-label">Longest Streak</span>
+
+                                    <strong class="habit-stat-value">
+                                        <?= (int) $habit['streaks']['longest'] ?>
+                                        <?= $habit['frequency'] === 'weekly' ? 'weeks' : 'days' ?>
+                                    </strong>
+                                </div>
+
+                            </div>
                             <!--completed status-->
                             <div class="habit-today-status">
 
