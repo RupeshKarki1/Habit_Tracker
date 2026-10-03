@@ -213,13 +213,17 @@ $connection->close();
                                     </button>
                                 </form>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary btn-small edit-habit-button"
-                                    data-habit-id="<?= (int) $habit['id'] ?>"
-                                >
-                                    Edit
-                                </button>
+                             <button
+                                type="button"
+                                class="btn btn-secondary btn-small edit-habit-button"
+                                data-habit-id="<?= (int) $habit['id'] ?>"
+                                data-name="<?= htmlspecialchars($habit['name']) ?>"
+                                data-description="<?= htmlspecialchars($habit['description'] ?? '') ?>"
+                                data-category="<?= htmlspecialchars($habit['category']) ?>"
+                                data-frequency="<?= htmlspecialchars($habit['frequency']) ?>"
+                            >
+                                Edit
+                            </button>
 
                                 <button
                                     type="button"
